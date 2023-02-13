@@ -1,0 +1,107 @@
+==============================OBJECTS==============================
+QuoteTable:
+    Fields:
+        id(Long)
+        content(String) - quote containment
+        date of creation(Date)
+        author(UsersTable) - user that posted a quote
+        isModified(boolean) - flag that displays information
+                              about quote modification
+        rating(Long) - total value of votes for this quote
+UsersTable:
+    Fields:
+        id(Long)
+        username(String)
+        email(String)
+        date of creation(Date)
+VotesTable:
+    Fields:
+        id(Long)
+        quote(QuoteTable)
+        voter(UserTable)
+        isUpvote - flag, if true that means upvote,
+                         vice versa downvote
+        dateOfVote(Date)
+
+===============================API===============================
+
+==============================QUOTE==============================
+
+[POST] /quote/create - creates a quote
+        Parameters:
+            content(String) - contains a text of quote
+            userid(Long) - id of user that posted a quote
+        Return:
+            QuoteTable
+
+[GET] /quote/get/{id} - returns a quote with specified ID
+        Parameters:
+            id(Long) - id of necessary quote
+        Return:
+            QuoteTable
+
+[PATCH] /quote/update - updates text of specified quote
+        Parameters:
+            id(Long) - id of necessary quote
+            newContent(String) - contains a text that will replace previous
+        Return:
+            QuoteTable
+
+[DELETE] /quote/delete/{id} - deletes a quote
+        Parameters:
+            id(Long) - id of necessary quote
+        Return:
+            nothing
+
+[GET] /quote/random - returns a random quote
+        Parameters:
+            nothing
+        Return:
+            QuoteTable
+
+==============================USER==============================
+
+[POST] /user/create - creates a user
+        Parameters:
+            username(String) - contains a name of user
+            email(String) - contains user email
+            password(String) - contains user password
+                (NOTE: database holds encrypted password)
+        Return:
+            UsersTable
+
+[GET] /user/get/{id} - returns a user with specified ID
+        Parameters:
+            id(Long) - id of necessary user
+        Return:
+            UsersTable
+
+==============================VOTE==============================
+
+[POST] /quote/vote - managing rating of quote
+        Parameters:
+            quoteId(Long) - holds id of quote
+            userId(Long) - holds id of voter
+            isUpvote(boolean) - flag, if true mean upvote,
+                                      vice versa downvote
+        Return:
+            UsersTable
+
+[GET] /quote/best/{limit} - display best of {limit} quotes
+        Parameters:
+            limit(int) - number of records, that been showed
+        Return:
+            List<QuotesTable>
+
+[GET] /quote/worst/{limit} - display worst of {limit} quotes
+        Parameters:
+            limit(int) - number of records, that been showed
+        Return:
+            List<QuotesTable>
+
+[GET] /quote/{id}/voteinfo - dsplay vote information about quote,
+                             including date of each vote, voter
+        Parameters:
+            id(Long) - id of necessary quote
+        Return:
+            List<VotesTable>
